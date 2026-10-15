@@ -3,6 +3,7 @@
 Backend em **Node.js + Express + Knex** com banco **PostgreSQL (Neon)**, para cadastrar, consultar, atualizar e remover veículos de uma montadora (CRUD).
 
 Disciplina: Programação cliente/servidor — Prof. Henique Barbosa (FAETERJ).
+Nome do aluno: Yasmin Sanglard Xavier 
 
 ## Tecnologias
 
@@ -88,7 +89,7 @@ SELECT enum_range(NULL::status_producao_enum);
 ```json
 {
   "modelo": "Modelo Exemplo",
-  "tipo_propulsao": "<valor válido do enum>",
+  "tipo_propulsao": "hibrido",
   "ano_modelo": 2026,
   "autonomia_km": 450,
   "capacidade_bateria_kwh": 75.50,
@@ -109,9 +110,9 @@ SELECT enum_range(NULL::status_producao_enum);
 
 Todas as consultas usam o Knex (`select`, `insert`, `update`, `del`), sem concatenar valores em SQL.
 
-## Testes (Postman / Insomnia / Thunder Client)
+## Testes (Thunder Client)
 
-Substitua `<ENUM_VALIDO>` por um valor real do enum `tipo_propulsao_enum`. Cole abaixo os prints/resultados de cada teste.
+Testes feitos com o Thunder Client, usando o banco do enunciado.
 
 | # | Cenário | Requisição | Esperado |
 |---|---|---|---|
@@ -120,17 +121,36 @@ Substitua `<ENUM_VALIDO>` por um valor real do enum `tipo_propulsao_enum`. Cole 
 | 3 | Cadastrar sem status | `POST /veiculos` sem `status_producao` | 201 + `status_producao: "em_producao"` |
 | 4 | Cadastrar (erro) | `POST /veiculos` sem `modelo` | 400 |
 | 5 | Cadastrar enum inválido | `POST /veiculos` com `tipo_propulsao: "xyz"` | 400 |
-| 6 | Buscar por id (sucesso) | `GET /veiculos/1` (id existente) | 200 + objeto |
-| 7 | Buscar por id (erro) | `GET /veiculos/999999` | 404 |
+| 6 | Buscar por id (sucesso) | `GET /veiculos/9` (id existente) | 200 + objeto |
+| 7 | Buscar por id (erro) | `GET /veiculos/9999` | 404 |
 | 8 | Atualizar (sucesso) | `PUT /veiculos/:id` com corpo completo | 200 + objeto atualizado |
-| 9 | Atualizar (erro) | `PUT /veiculos/999999` | 404 |
+| 9 | Atualizar (erro) | `PUT /veiculos/9999` | 404 |
 | 10 | Remover (sucesso) | `DELETE /veiculos/:id` | 204 |
-| 11 | Remover (erro) | `DELETE /veiculos/999999` | 404 |
+| 11 | Remover (erro) | `DELETE /veiculos/9999` | 404 |
 | 12 | Id inválido | `GET /veiculos/abc` | 400 |
 
 ### Resultados
 
-_(Cole aqui os prints dos testes feitos.)_
+### GET /veiculos
+![GET lista - 200](prints/01-get-lista-200.png)
+
+### GET /veiculos/:id
+![GET por id - 200](prints/02-get-id-200.png)
+![GET id inexistente - 404](prints/03-get-id-inexistente-404.png)
+![GET id inválido - 400](prints/04-get-id-invalido-400.png)
+
+### POST /veiculos
+![POST sucesso - 201](prints/05-post-sucesso-201.png)
+![POST sem modelo - 400](prints/06-post-sem-modelo-400.png)
+![POST enum inválido - 400](prints/07-post-enum-invalido-400.png)
+
+### PUT /veiculos/:id
+![PUT sucesso - 200](prints/08-put-sucesso-200.png)
+![PUT id inexistente - 404](prints/09-put-inexistente-404.png)
+
+### DELETE /veiculos/:id
+![DELETE sucesso - 204](prints/10-delete-sucesso-204.png)
+![DELETE id inexistente - 404](prints/11-delete-inexistente-404.png)
 
 ## Observações
 
